@@ -1,0 +1,301 @@
+:root {
+    --aqua: #19b5ad;
+    --aqua-dark: #0d8f89;
+    --aqua-light: #e8f9f8;
+
+    --orange: #f05a47;
+    --orange-dark: #d94735;
+
+    --text: #263238;
+    --text-light: #607d82;
+    --border: #d7e5e6;
+    --background: #f2f8f8;
+    --white: #ffffff;
+
+    --radius: 12px;
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    background:
+        linear-gradient(
+            135deg,
+            #e7f9f8,
+            #f7fbfb 55%,
+            #fff0ed
+        );
+}
+
+
+/* =========================
+   CONTAINER
+   ========================= */
+
+.container {
+    width: 100%;
+    max-width: 560px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+/* =========================
+   FORMULÁRIO
+   ========================= */
+
+#form-perfil {
+    padding: 35px;
+    background: var(--white);
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(38, 50, 56, 0.12);
+}
+
+
+/* =========================
+   TÍTULO
+   ========================= */
+
+#form-perfil h2 {
+    margin: 0 0 30px;
+    color: var(--aqua-dark);
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+}
+
+
+/* =========================
+   LEGEND
+   ========================= */
+
+#form-perfil legend {
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 25px 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--aqua-light);
+    color: var(--aqua-dark);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/* =========================
+   DADOS PESSOAIS
+   ========================= */
+
+#dados_pessoais {
+    display: inline-block;
+    text-align: left;
+}
+
+
+/* Labels */
+#dados_pessoais label {
+    margin-bottom: 35px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* Asterisco de campo obrigatório */
+.obrig {
+    display: inline;
+    margin-right: 4px;
+    color: var(--orange);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   INPUTS
+   ========================= */
+
+#dados_pessoais input[type="text"],
+#dados_pessoais input[type="date"] {
+    width: 100%;
+
+    margin-bottom: 18px;
+    padding: 13px 14px;
+
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+
+    background: #fbfdfd;
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* Foco */
+
+#dados_pessoais input[type="text"]:focus,
+#dados_pessoais input[type="date"]:focus {
+    border-color: var(--aqua);
+
+    background: var(--white);
+
+    box-shadow:
+        0 0 0 3px rgba(25, 181, 173, 0.15);
+}
+
+
+/* =========================
+   GÊNEROS
+   ========================= */
+
+#generos_select {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+}
+
+
+/* Cada opção */
+
+#generos_select label {
+    display: flex;
+    align-items: center;
+
+    padding: 11px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: #fbfdfd;
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* Hover */
+
+#generos_select label:hover {
+    border-color: var(--aqua);
+
+    background: var(--aqua-light);
+
+    transform: translateY(-1px);
+}
+
+
+/* Checkbox */
+
+#generos_select input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+
+    margin: 0 9px 0 0;
+
+    accent-color: var(--aqua);
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   BOTÃO
+   ========================= */
+
+#form-perfil button {
+    width: 100%;
+
+    margin-top: 28px;
+    padding: 14px 20px;
+
+    border: none;
+    border-radius: var(--radius);
+
+    background: var(--orange);
+
+    color: var(--white);
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Hover */
+
+#form-perfil button:hover {
+    background: var(--orange-dark);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(240, 90, 71, 0.28);
+}
+
+
+/* Clique */
+
+#form-perfil button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================
+   RESPONSIVIDADE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 20px 12px;
+    }
+
+    #form-perfil {
+        padding: 25px 20px;
+        border-radius: 14px;
+    }
+
+    #form-perfil h2 {
+        font-size: 24px;
+    }
+
+    #generos_select {
+        grid-template-columns: 1fr;
+    }
+}
