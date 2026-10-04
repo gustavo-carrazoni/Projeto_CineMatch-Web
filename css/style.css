@@ -27,7 +27,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    padding: 20px 30px;
     font-family: "Segoe UI", Arial, sans-serif;
     color: var(--text);
     background:
@@ -45,10 +45,172 @@ body {
    ========================= */
 
 .container {
+    position: relative;
     width: 100%;
-    max-width: 560px;
+    max-width: 760px;
     border: 1px solid black;
     text-align: center;
+}
+
+.hero {
+    border: 1px solid green;
+    position: sticky;
+    top: 0px;
+}
+
+/* =========================
+    Pop-ups e Avisos
+   ========================= */
+
+.popup {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    inset: 10% 30%;
+    max-width: 40vw;
+    height: 30vh;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(38, 50, 56, 0.12);
+    background-color: rgba(119, 241, 237, 0.60);
+
+    justify-content: center;
+    align-items: center;
+}
+
+.popupResumo{
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    inset: 10% 20%;
+    max-width: 60vw;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(38, 50, 56, 0.12);
+    background-color: rgba(119, 241, 237, 0.60);
+
+    justify-content: center;
+    align-items: center;
+}
+
+.popupResumo.ativo{
+    display:flex;
+}
+
+.fechar{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    border: none;
+    background: none;
+
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.btnOk {
+    position: absolute;
+    bottom: 10%;
+    padding: 10px 25px;
+
+    border: none;
+    border-radius: 5px;
+
+    background-color: var(--aqua-dark);
+    color: white;
+    cursor: pointer;
+}
+
+.popup.ativo{
+    display:flex;
+}
+
+#aviso{
+    position: absolute;
+    top: 20px;
+    max-width: 90%;
+    height: fit-content;
+    max-height: 90%;
+    padding: 1em;
+    text-align: center;
+
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================
+   BARRA NAV
+   ========================= */
+
+#menuUsuario{
+    display: none;
+    text-align: left;
+}
+
+/* =========================
+   MESSAGE BAR
+   ========================= */
+
+   .welcomeMessage {
+    display:none;
+   }
+
+   .welcomeMessage.ativo{
+    display: flex;
+    margin: 40px auto 25px;
+    padding: 25px 30px;
+
+    background: linear-gradient(
+        135deg,
+        var(--aqua-dark),
+        var(--aqua)
+    );
+
+    border: 1px solid white;
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 15px rgba(255, 255, 255, 0.25),
+        0 8px 25px rgba(0, 0, 0, 0.4);
+
+    text-align: center;
+    color: #ffffff;
+
+    position: relative;
+    z-index: 1;
+}
+
+.welcomeMessage p {
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.welcomeMessage p:first-child {
+    margin-bottom: 12px;
+
+    font-size: 1.6rem;
+    font-weight: 700;
+
+    color: var(--white);
+
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.welcomeMessage p:last-child {
+    font-size: 1rem;
+    color: var(--text);
+}
+
+/* Pequeno destaque no topo */
+.welcomeMessage::before {
+    content: "🎬";
+
+    display: block;
+    margin-bottom: 8px;
+
+    font-size: 2rem;
 }
 
 /* =========================
@@ -82,7 +244,7 @@ body {
 
 #form-perfil legend {
     display: block;
-    text-align: left;
+    text-align: center;
     width: 100%;
     margin: 25px 0 18px;
     padding-bottom: 8px;
@@ -275,6 +437,179 @@ body {
     transform: translateY(0);
 }
 
+/* =========================
+   CARDS
+   ========================= */
+
+/* Container principal do catálogo */
+.catalogo {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título */
+.catalogo h2 {
+    margin-bottom: 30px;
+
+    font-size: 2rem;
+    text-align: center;
+}
+
+
+/* Container dos cards */
+.listaSeries {
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+
+    gap: 25px;
+}
+
+
+/* Card individual */
+.cardSerie {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background-color: var(--aqua-dark);
+
+    border-radius: 12px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* Efeito ao passar o mouse */
+.cardSerie:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.6),
+        0 0 10px rgba(250, 250, 250, 0.4);
+}
+
+
+/* Imagem */
+.cardSerie img {
+    width: 100%;
+    height: 300px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* Conteúdo do card */
+.infoSerie {
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    flex: 1;
+}
+
+
+/* Nome da série */
+.infoSerie h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 1.3rem;
+
+    text-align: center;
+}
+
+
+/* Textos */
+.infoSerie p {
+    margin: 0;
+
+    color: #dcdcdc;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+}
+
+.btnResumo {
+    align-self:center;
+    padding-right: 5px;
+    line-height: 0.8;
+    border: none;
+    border-radius: 5px;
+
+    background-color: #1b1b2f;
+    color: #ffffff;
+
+    font-size: 0.85rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+}
+
+.btnResumo:hover {
+    transform: translateY(-1px);
+    background-color: #1b1b2f;
+    box-shadow: 
+        0 3px 8px rgba(250, 250, 250, 0.65),
+        0 0 6px rgba(0, 0, 0, 0.65);
+}
+
+
+/* Nota */
+.infoSerie .nota {
+    color: #ffd700;
+
+    font-weight: bold;
+
+    font-size: 1rem;
+}
+
+
+/* Gêneros */
+.infoSerie .generos {
+    color: var(--aqua-light);
+}
+
+
+/* Status */
+.infoSerie .status {
+    align-self: flex-start;
+
+    margin-top: auto;
+    padding: 5px 10px;
+
+    background-color: var(--aqua);
+
+    border-radius: 15px;
+
+    color: #ffffff;
+
+    font-size: 0.8rem;
+}
 
 /* =========================
    RESPONSIVIDADE
