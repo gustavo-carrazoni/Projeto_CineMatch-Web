@@ -1,4 +1,6 @@
 import { Conteudo, Serie, Usuario } from "./modelo.js";
+import { mensagemBoasVindas, mostrarCatalogo, mostrarErroCarregarAPI } from "./ui.js";
+import { delay, carregarCatalogo, organizaConteudo, calcularCompatb, calcularIdade } from './functions.js';
 
 
 const form_cadastro = document.getElementById("form-perfil");
@@ -8,26 +10,42 @@ const mensagem = document.getElementById("mensagem");
 
 async function verificaPerfilSalvo(){
     const dados_user = localStorage.getItem("usuario");
-
     console.log(dados_user);
 
     if (dados_user === null) {
         console.log("Usuário não cadastrado.");
-        return true;
+        return false;
     }else{
-        const usuario = JSON.parse(dados_user);
-        console.log(usuario);
+        const dados_usuario = JSON.parse(dados_user);
 
+        const userSession = new Usuario(dados_usuario.email, dados_usuario.nome, dados_usuario.data_nascimento, calcularIdade(dados_usuario.data_nascimento), dados_usuario.genero);
 
         menuNav.style.display = "flex";
         form_cadastro.style.display = "none";
 
-        mensagemBoasVindas(usuario.nome);
-        return false;
+        mensagemBoasVindas(userSession.nome);
+        return true;
     }
 }
 
 async function cadastrarUsuario(){
+    await form_cadastro.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const dados_user = new FormData(document.getElementById('form-perfil'));
+            const usuario = Object.fromEntries(dados_user);
+            usuario.genero = dados_user.getAll("genero");
+
+            console.log(usuario);
+            console.log(usuario.nome);
+            console.log(usuario.data_nascimento);
+
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+            window.location.reload();
+    });
+}
+
+/*async function cadastrarUsuario(){
     await form_cadastro.addEventListener("submit", (event) => {
             event.preventDefault();
 
@@ -163,12 +181,19 @@ async function mostrarCatalogo(conteudo) {
 function delay(t) {
     return new Promise(resolve => setTimeout(resolve, t));
 }
+    
+*/
 
 document.addEventListener("DOMContentLoaded", async () => {
-    if(await verificaPerfilSalvo()){
+    const sessaoInic = await verificaPerfilSalvo();
+
+    if(!sessaoInic){
         mensagemBoasVindas("estranho");
         await cadastrarUsuario();
     }else{
+        const dados_user = localStorage.getItem("usuario");
+        const dados_usuario = JSON.parse(dados_user);
+        const userSession = new Usuario(dados_usuario.email, dados_usuario.nome, dados_usuario.data_nascimento, calcularIdade(dados_usuario.data_nascimento), dados_usuario.genero);
         const conteudo_API = await carregarCatalogo();
 
         let series = [];
@@ -176,8 +201,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             series.push(new Serie(dado.id, dado.url, dado.name, dado.summary, dado.runtime, dado.genres, dado.image.medium, dado.rating.average, dado.premiered, dado.status));
         })
 
-        console.log(series);
-        mostrarCatalogo(series);
+        const titulosCompativeis = await calcularCompatb(series, userSession);
+
+        const seriesCompativeis = series.filter((s) => titulosCompativeis.find(x => x.id === s.id))
+        .map((s) => {
+            const tituloCompativel = titulosCompativeis.find((x) => x.id === s.id);
+            if(!tituloCompativel){
+                return null;
+            }else{
+                  return {
+                    id: s.id,
+                    url: s.url,
+                    name: s.name,
+                    summary: s.summary,
+                    generosCompatb: tituloCompativel.generos,
+                    incompat: tituloCompativel.incompat,
+                    image: s.image,
+                    averageRuntime: s.averageRuntime,
+                    premiered: s.premiered,
+                    status: s.status,
+                    perc_afinid: tituloCompativel.perc_afinid
+                }
+            }
+        });
+              
+        console.log(seriesCompativeis);
+
+        mostrarCatalogo(seriesCompativeis);
 
         document.addEventListener("click", (clickBotaoResumo) => {
 
@@ -207,6 +257,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             }
 
+        });
+
+        document.getElementById('TrocarUsuario').addEventListener("click", (clickTrocarUsuario) => {
+            localStorage.clear();
         });
 
         }

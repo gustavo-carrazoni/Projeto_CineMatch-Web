@@ -18,17 +18,15 @@ class Serie extends Conteudo{
         this.status = status;
     }
 
-    mostrarResumo(){
-        console.log(`Serie - ID: ${this.id}\nNome: ${this.name}\nDuração Ep.: ${this.averageRuntime}\nGênero: ${this.genres}\nStatus: ${this.status}\nAvaliação: ${this.rating}\nLançamento: ${this.premiered}\n\n`);
-    }
 }
 
 class Usuario{
-    constructor(email, nome, idade, genero){
+    constructor(email, nome, data_nasc, idade, genero){
         this.email = email;
         this.nome = nome;
+        this.data_nasc = data_nasc;
         this.idade = idade;
-        this.genero = genero;
+        this.generos = genero;
     }
 }
 
