@@ -1,12 +1,7 @@
 import { Conteudo, Serie, Usuario } from "./modelo.js";
 import { mensagemBoasVindas, mostrarCatalogo, mostrarErroCarregarAPI } from "./ui.js";
-import { delay, carregarCatalogo, organizaConteudo, calcularCompatb, calcularIdade } from './functions.js';
+import { delay, carregarCatalogo, organizaConteudo, calcularCompatb, calcularIdade, primeiraMaiusc, nomeMaiusc } from './functions.js';
 
-
-const form_cadastro = document.getElementById("form-perfil");
-const botao_cadastro = document.getElementsByName("cadastro_user");
-const menuNav = document.getElementById("menuUsuario");
-const mensagem = document.getElementById("mensagem");
 
 async function verificaPerfilSalvo(){
     const dados_user = localStorage.getItem("usuario");
@@ -18,171 +13,27 @@ async function verificaPerfilSalvo(){
     }else{
         const dados_usuario = JSON.parse(dados_user);
 
-        const userSession = new Usuario(dados_usuario.email, dados_usuario.nome, dados_usuario.data_nascimento, calcularIdade(dados_usuario.data_nascimento), dados_usuario.genero);
+        document.getElementById('menu_usuario').style.display = "block";
+        document.getElementById('form-perfil').style.display = "none";
 
-        menuNav.style.display = "flex";
-        form_cadastro.style.display = "none";
-
-        mensagemBoasVindas(userSession.nome);
+        mensagemBoasVindas(nomeMaiusc(dados_usuario.nome.trim()).split(' ')[0]);
         return true;
     }
 }
 
 async function cadastrarUsuario(){
-    await form_cadastro.addEventListener("submit", (event) => {
+    await document.getElementById('form-perfil').addEventListener("submit", (event) => {
             event.preventDefault();
 
             const dados_user = new FormData(document.getElementById('form-perfil'));
+
             const usuario = Object.fromEntries(dados_user);
             usuario.genero = dados_user.getAll("genero");
-
-            console.log(usuario);
-            console.log(usuario.nome);
-            console.log(usuario.data_nascimento);
 
             localStorage.setItem('usuario', JSON.stringify(usuario));
             window.location.reload();
     });
 }
-
-/*async function cadastrarUsuario(){
-    await form_cadastro.addEventListener("submit", (event) => {
-            event.preventDefault();
-
-            const dados_user = new FormData(form_cadastro);
-            const usuario = Object.fromEntries(dados_user);
-            usuario.genero = dados_user.getAll("genero");
-
-            console.log(usuario);
-            console.log(usuario.nome);
-            console.log(usuario.data_nascimento);
-
-            localStorage.setItem('usuario', JSON.stringify(usuario));
-            window.location.reload();
-        });
-}
-
-function mensagemBoasVindas(usuario){
-   
-    if(usuario === "estranho"){
-        const welcomeMessage = document.querySelector('.welcomeMessage');
-        welcomeMessage.innerHTML = `<p>Seja bem vind@ ao CINEMATCH WEB!</p>
-            <p>Faça seu cadastro para buscarmos indicações de séries e filmes para você!</p>`;
-        welcomeMessage.classList.add('ativo');
-    }else{
-         const aviso = document.getElementById("popup");
-        aviso.innerHTML = `<button id="btnFecharPopup" class="fechar">&times;</button>
-            <div id="aviso"><p>Seja bem vind@, ${usuario}!</p>
-            <p>Veja essas indicações que temos para você:</p></div>
-            <button class="btnOk" id="btnOk">OK</button>`;
-        aviso.classList.add('ativo');
-        const btnFechar = document.querySelector("#btnFecharPopup");
-        const btnOk = document.querySelector("#btnOk");
-
-        btnFechar.addEventListener("click", () => {
-            aviso.classList.remove('ativo');
-        });
-
-        btnOk.addEventListener("click", () => {
-            aviso.classList.remove('ativo');
-        });
-
-        setTimeout(() => {
-            aviso.classList.remove('ativo');
-        }, 3000);
-    }
-}
-
-async function carregarCatalogo() {
-    try{
-        const response = await fetch("https://api.tvmaze.com/shows");
-            if(!response.ok){
-                throw new Error(`Erro HTTP: ${response.status}`);
-                return;
-            }
-        const dados_catalogo = await response.json();
-
-        return dados_catalogo;
-    }catch (erro){
-        console.error("Falha: ", erro);
-    }
-    
-}
-
-async function mostrarCatalogo(conteudo) {
-
-    document.querySelector('.catalogo').style.display = 'flex';
-    const listaSeries = document.querySelector("#listaSeries");
-
-    listaSeries.innerHTML = "";
-
-    conteudo.forEach((serie) => {
-
-        const card = document.createElement("div");
-        const summary_short = (serie.summary.length > 150) ?
-            serie.summary.substring(0, 150) : serie.summary;
-
-        card.classList.add("cardSerie");
-        
-        card.innerHTML = `
-            <img
-                src="${serie.image}"
-                alt="Poster da série ${serie.name}"
-            >
-
-            <div class="infoSerie">
-
-                <h3>${serie.name}</h3>
-                
-                ${summary_short.includes("</p>") ? 
-                    summary_short : 
-                    summary_short + `
-                    <button class='btnResumo' data-id='${serie.id}'>...</button></p>`
-                }
-
-                <p class="generos">
-                    <strong>Gêneros:</strong>
-                    ${serie.genres.join(", ")}
-                </p>
-
-                <p>
-                    <strong>Duração:</strong>
-                    ${serie.averageRuntime} minutos
-                </p>
-
-                <p class="nota">
-                    ⭐ ${serie.rating ?? "Sem avaliação"}
-                </p>
-
-                <p>
-                    <strong>Estreia:</strong>
-                    ${serie.premiered}
-                </p>
-
-                <p class="status">
-                    ${serie.status}
-                </p>
-
-            </div>
-        `;
-
-        listaSeries.appendChild(card);
-        
-        if(card.querySelector('.btnResumo')){
-            const botao = card.querySelector('.btnResumo');
-            botao.dataset.resumo = serie.summary;
-            botao.dataset.name=serie.name;
-        
-        }
-    });
-}
-
-
-function delay(t) {
-    return new Promise(resolve => setTimeout(resolve, t));
-}
-    
-*/
 
 document.addEventListener("DOMContentLoaded", async () => {
     const sessaoInic = await verificaPerfilSalvo();
@@ -193,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }else{
         const dados_user = localStorage.getItem("usuario");
         const dados_usuario = JSON.parse(dados_user);
-        const userSession = new Usuario(dados_usuario.email, dados_usuario.nome, dados_usuario.data_nascimento, calcularIdade(dados_usuario.data_nascimento), dados_usuario.genero);
+        const userSession = new Usuario(dados_usuario.email.trim(), nomeMaiusc(dados_usuario.nome.trim()), dados_usuario.data_nascimento, calcularIdade(dados_usuario.data_nascimento), dados_usuario.genero);
         const conteudo_API = await carregarCatalogo();
 
         let series = [];
@@ -201,33 +52,40 @@ document.addEventListener("DOMContentLoaded", async () => {
             series.push(new Serie(dado.id, dado.url, dado.name, dado.summary, dado.runtime, dado.genres, dado.image.medium, dado.rating.average, dado.premiered, dado.status));
         })
 
-        const titulosCompativeis = await calcularCompatb(series, userSession);
 
-        const seriesCompativeis = series.filter((s) => titulosCompativeis.find(x => x.id === s.id))
-        .map((s) => {
-            const tituloCompativel = titulosCompativeis.find((x) => x.id === s.id);
-            if(!tituloCompativel){
-                return null;
-            }else{
-                  return {
-                    id: s.id,
-                    url: s.url,
-                    name: s.name,
-                    summary: s.summary,
-                    generosCompatb: tituloCompativel.generos,
-                    incompat: tituloCompativel.incompat,
-                    image: s.image,
-                    averageRuntime: s.averageRuntime,
-                    premiered: s.premiered,
-                    status: s.status,
-                    perc_afinid: tituloCompativel.perc_afinid
+        if(userSession.generos.length == 0) {
+            mostrarCatalogo(series);
+        }else{
+
+            const titulosCompativeis = await calcularCompatb(series, userSession);
+
+            const seriesCompativeis = series.filter((s) => titulosCompativeis.find(x => x.id === s.id))
+            .map((s) => {
+                const tituloCompativel = titulosCompativeis.find((x) => x.id === s.id);
+                if(!tituloCompativel){
+                    return null;
+                }else{
+                    return {
+                        id: s.id,
+                        url: s.url,
+                        name: s.name,
+                        summary: s.summary,
+                        generosCompatb: tituloCompativel.generos,
+                        incompat: tituloCompativel.incompat,
+                        image: s.image,
+                        averageRuntime: s.averageRuntime,
+                        rating: s.rating,
+                        premiered: s.premiered,
+                        status: s.status,
+                        perc_afinid: tituloCompativel.perc_afinid
+                    }
                 }
-            }
-        });
-              
-        console.log(seriesCompativeis);
+            });
+                
+            console.log(seriesCompativeis);
 
-        mostrarCatalogo(seriesCompativeis);
+            mostrarCatalogo(seriesCompativeis);
+        }
 
         document.addEventListener("click", (clickBotaoResumo) => {
 
@@ -236,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const titulo = clickBotaoResumo.target.dataset.name;
                 const resumo = clickBotaoResumo.target.dataset.resumo;
                 
-                const aviso = document.getElementById('popupResumo');
+                const aviso = document.getElementById('popup_resumo');
 
                 aviso.innerHTML = `<button id="btnFecharResumo" class="fechar">&times;</button>
                     <div id="aviso"><p>${titulo}</p>
@@ -259,12 +117,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         });
 
-        document.getElementById('TrocarUsuario').addEventListener("click", (clickTrocarUsuario) => {
+        document.getElementById('trocar_usuario').addEventListener("click", (clickTrocarUsuario) => {
             localStorage.clear();
+            window.location.reload();
         });
 
-        }
+        
+        document.getElementById('mostrar_catalogo_comp').addEventListener("click", (clickMostrarCatalogoComp) => {
+            
+            mostrarCatalogo(series);
+        
+        });
     }
-);
-
-
+});

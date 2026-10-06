@@ -1,6 +1,15 @@
 import { Conteudo, Serie, Usuario } from "./modelo.js";
 import { mensagemBoasVindas, mostrarCatalogo, mostrarErroCarregarAPI } from "./ui.js";
 
+function primeiraMaiusc(string){
+    const palavras = string.map(gen => gen.toLocaleLowerCase().charAt(0).toUpperCase() + gen.toLocaleLowerCase().slice(1));
+    return palavras;
+}
+
+function nomeMaiusc(string){
+    const nome = string.toLowerCase().split(' ').map((u) => u.charAt(0).toLocaleUpperCase()+u.slice(1)).join(' ');
+    return nome;
+}
 
 function calcularIdade(data){
     const hoje = new Date();
@@ -92,4 +101,4 @@ console.log(titulosCompativeis.length);
 console.log(titulosCompativeis.sort((a,b)=>b.perc_afinid-a.perc_afinid)); */
 
 
-export { delay, carregarCatalogo, organizaConteudo, calcularCompatb, calcularIdade };
+export { delay, carregarCatalogo, organizaConteudo, calcularCompatb, calcularIdade, primeiraMaiusc, nomeMaiusc };

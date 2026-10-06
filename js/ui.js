@@ -49,7 +49,7 @@ async function mostrarErroCarregarAPI() {
 async function mostrarCatalogo(conteudo) {
 
     document.querySelector('.catalogo').style.display = 'flex';
-    const listaSeries = document.querySelector("#listaSeries");
+    const listaSeries = document.querySelector("#lista_series");
 
     listaSeries.innerHTML = "";
     
@@ -59,9 +59,9 @@ async function mostrarCatalogo(conteudo) {
         let afinidade;
         if(serie.perc_afinid > 0 && serie.perc_afinid <40){
             afinidade = "Baixa";
-        }else if (serie.perc_afinid >= 40 && serie.perc_afinid < 70){
+        }else if (serie.perc_afinid >= 40 && serie.perc_afinid < 60){
             afinidade = "Média";
-        }else if (serie.perc_afinid >= 70){
+        }else if (serie.perc_afinid >= 60){
             afinidade = "Alta";
         }
         
@@ -78,7 +78,7 @@ async function mostrarCatalogo(conteudo) {
             >
 
             <div class="infoSerie">
-                <h4>Afinidade: ${afinidade}</h4>
+                ${afinidade ? `<h4>Afinidade: ${afinidade}</h4>` : ''}
 
                 <h3>${serie.name}</h3>
                 
@@ -89,8 +89,8 @@ async function mostrarCatalogo(conteudo) {
                 }
 
                 <p class="generos">
-                    <strong>Gêneros Compatíveis:</strong>
-                    ${serie.generosCompatb.join(", ")}
+                    ${serie.generosCompatb ?'<strong>Gêneros Compatíveis:</strong>':'<strong>Gêneros:</strong>'}
+                    ${serie.generosCompatb ? serie.generosCompatb.join(", ") : serie.genres}
                 </p>
 
                 <p>
@@ -101,12 +101,12 @@ async function mostrarCatalogo(conteudo) {
                 <p class="nota">
                     ⭐ ${serie.rating ?? "Sem avaliação"}
                 </p>
-
-                <p class="generos">
-                    <strong>Explore os gêneros:</strong>
-                    ${serie.incompat.join(", ")}
-                </p>
-
+                ${serie.incompat ? `
+                    <p class="generos">
+                        <strong>Explore os gêneros:</strong>
+                        ${serie.incompat.join(", ")}
+                    </p>` : ""
+                }
                 <p>
                     <strong>Estreia:</strong>
                     ${serie.premiered}
