@@ -683,19 +683,37 @@ body {
    RESPONSIVIDADE
    ========================= */
 
-@media (max-width: 600px) {
-
+@media (min-width: 601px) {
     body {
-        padding: 20px 12px;
+        padding-right: 20px;
+        padding-left: 20px;
     }
 
     #form-perfil {
-        padding: 25px 20px;
-        border-radius: 14px;
+        padding: 35px;
     }
 
-    #form-perfil h2 {
-        font-size: 24px;
+    #generos_select {
+        flex-direction: row;
     }
 
+    .listaSeries {
+        flex-direction: row;
+    }
+
+    .popup,
+    .popupResumo {
+        inset: 10% auto;
+        left: 50%;
+        width: min(60vw, 700px);
+        max-width: 700px;
+
+        transform: translateX(-50%);
+    }
+}
+
+@media (min-width: 900px) {
+    .listaSeries {
+        flex-direction: row;
+    }
 }
